@@ -1,0 +1,7 @@
+.env
+rest_api/config/.env
+node_modules
+rest_api/node_modules
+.DS_Store
+*.log
+coverage/

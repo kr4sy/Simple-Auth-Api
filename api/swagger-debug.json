@@ -1,0 +1,759 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Praktyki API",
+    "version": "1.0.0",
+    "description": "Dokumentacja API, praktyki"
+  },
+  "servers": [
+    {
+      "url": "https://test1.sysmo.pl/api"
+    }
+  ],
+  "paths": {
+    "/admin/features": {
+      "post": {
+        "summary": "Dodaj nową rolę/feature",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Rower"
+                  },
+                  "img_src": {
+                    "type": "string",
+                    "example": "rower.png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Dodano feature"
+          }
+        }
+      }
+    },
+    "/admin/admins": {
+      "post": {
+        "summary": "Dodaj nowego admina",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Jan"
+                  },
+                  "surname": {
+                    "type": "string",
+                    "example": "Kowalski"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jan@kowalski.pl"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "tajnehaslo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Dodano admina"
+          }
+        }
+      }
+    },
+    "/admin/admins/{id}": {
+      "delete": {
+        "summary": "Usuń admina",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usunięto admina"
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "summary": "Pobierz listę użytkowników",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista użytkowników"
+          }
+        }
+      }
+    },
+    "/admin/users/{id}": {
+      "delete": {
+        "summary": "Anonimizuj użytkownika (flaga is_deleted)",
+        "tags": [
+          "Admin"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Użytkownik zanonimizowany"
+          }
+        }
+      }
+    },
+    "/verify-otp": {
+      "post": {
+        "summary": "Weryfikacja kodu OTP",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "otp": {
+                    "type": "string",
+                    "example": "123456"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Kod OTP zweryfikowany"
+          },
+          "400": {
+            "description": "Błąd walidacji lub nieprawidłowy kod"
+          }
+        }
+      }
+    },
+    "/resend-otp": {
+      "post": {
+        "summary": "Wysyła ponownie kod OTP na email",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Kod OTP wysłany ponownie"
+          },
+          "400": {
+            "description": "Błąd walidacji lub nieprawidłowy email"
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "summary": "Logowanie użytkownika",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "haslo123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Zalogowano użytkownika"
+          },
+          "401": {
+            "description": "Błędne dane logowania"
+          },
+          "403": {
+            "description": "Konto nie zostało zweryfikowane. Sprawdź swoją skrzynkę e-mail."
+          }
+        }
+      }
+    },
+    "/refresh-token": {
+      "post": {
+        "summary": "Odśwież token dostępu",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Nowy access token"
+          },
+          "400": {
+            "description": "Błąd odświeżania tokena"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "post": {
+        "summary": "Wyloguj użytkownika",
+        "tags": [
+          "Auth"
+        ],
+        "responses": {
+          "200": {
+            "description": "Wylogowano użytkownika"
+          },
+          "400": {
+            "description": "Błąd wylogowania"
+          }
+        }
+      }
+    },
+    "/logout-all": {
+      "post": {
+        "summary": "Wyloguj użytkownika ze wszystkich urządzeń",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Wylogowano ze wszystkich urządzeń"
+          },
+          "401": {
+            "description": "Brak autoryzacji"
+          }
+        }
+      }
+    },
+    "/profile": {
+      "get": {
+        "summary": "Pobierz dane profilu użytkownika",
+        "tags": [
+          "Profile"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dane profilu użytkownika",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "surname": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "phoneNumber": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Użytkownik nie znaleziony"
+          }
+        }
+      },
+      "put": {
+        "summary": "Zmień dane profilu użytkownika",
+        "tags": [
+          "Profile"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Jan"
+                  },
+                  "surname": {
+                    "type": "string",
+                    "example": "Kowalski"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jan@kowalski.com"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "example": "123456789"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Dane zostały zaktualizowane"
+          },
+          "400": {
+            "description": "Błąd walidacji lub brak danych do zmiany"
+          },
+          "404": {
+            "description": "Użytkownik nie znaleziony"
+          }
+        }
+      }
+    },
+    "/profile/password": {
+      "put": {
+        "summary": "Zmień hasło użytkownika",
+        "tags": [
+          "Profile"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": {
+                    "type": "string",
+                    "example": "starehaslo"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example": "nowehaslo"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Hasło zostało zmienione"
+          },
+          "400": {
+            "description": "Brak wymaganych danych lub błąd walidacji"
+          },
+          "401": {
+            "description": "Błędne stare hasło"
+          },
+          "404": {
+            "description": "Użytkownik nie znaleziony"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "summary": "Rejestracja nowego użytkownika",
+        "tags": [
+          "Auth"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "Jan"
+                  },
+                  "surname": {
+                    "type": "string",
+                    "example": "Kowalski"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jan@kowalski.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "haslo123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Użytkownik zarejestrowany"
+          },
+          "400": {
+            "description": "Błąd walidacji lub brak wymaganych danych"
+          },
+          "409": {
+            "description": "Konto na ten adres e-mail już istnieje, ale nie zostało zweryfikowane.\nKonto na ten adres e-mail już istnieje.\n"
+          }
+        }
+      }
+    },
+    "/rentposts": {
+      "get": {
+        "summary": "Pobierz listę ogłoszeń",
+        "tags": [
+          "RentPost"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "categoriesId",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID kategorii (np. 1 - kampery, 2 - noclegi, 3 - sauna)"
+          },
+          {
+            "in": "query",
+            "name": "search",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Wyszukiwanie po tytule ogłoszenia"
+          },
+          {
+            "in": "query",
+            "name": "sortBy",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Kolumna do sortowania (np. title)"
+          },
+          {
+            "in": "query",
+            "name": "sortOrder",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ASC",
+                "DESC"
+              ]
+            },
+            "description": "Kierunek sortowania"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista ogłoszeń",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Błąd pobierania ogłoszeń"
+          }
+        }
+      }
+    },
+    "/rentpost": {
+      "post": {
+        "summary": "Dodaj nowe ogłoszenie",
+        "tags": [
+          "RentPost"
+        ],
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Rower górski"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Super rower na weekend."
+                  },
+                  "monThirsPrice": {
+                    "type": "number",
+                    "example": 10
+                  },
+                  "weekendPrice": {
+                    "type": "number",
+                    "example": 20
+                  },
+                  "twoDaysPrice": {
+                    "type": "number",
+                    "example": 30
+                  },
+                  "threeDaysPrice": {
+                    "type": "number",
+                    "example": 40
+                  },
+                  "everyNextDayPrice": {
+                    "type": "number",
+                    "example": 50
+                  },
+                  "categoriesId": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "example": "123456789"
+                  },
+                  "photoSrc": {
+                    "type": "string",
+                    "example": "img.png"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Ogłoszenie dodane"
+          },
+          "400": {
+            "description": "Błąd dodawania ogłoszenia"
+          }
+        }
+      }
+    },
+    "/rentpost/{id}": {
+      "get": {
+        "summary": "Pobierz ogłoszenie po ID",
+        "tags": [
+          "RentPost"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID ogłoszenia"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Ogłoszenie"
+          },
+          "404": {
+            "description": "Nie znaleziono ogłoszenia"
+          }
+        }
+      }
+    },
+    "/rentpost/{id}/promotion": {
+      "post": {
+        "summary": "Dodaj promocję do ogłoszenia",
+        "tags": [
+          "RentPost"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID ogłoszenia"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "startDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-01-01"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "format": "date",
+                    "example": "2024-01-10"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Promocja została ustawiona"
+          },
+          "400": {
+            "description": "Błąd dodawania promocji"
+          }
+        }
+      },
+      "get": {
+        "summary": "Pobierz promocję ogłoszenia",
+        "tags": [
+          "RentPost"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "ID ogłoszenia"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Promocja ogłoszenia"
+          },
+          "404": {
+            "description": "Nie znaleziono promocji"
+          }
+        }
+      }
+    }
+  },
+  "components": {},
+  "tags": []
+}
