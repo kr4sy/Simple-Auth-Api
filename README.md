@@ -35,7 +35,7 @@ A Node.js REST API with JWT authentication, refresh token rotation, MySQL databa
 
 1. **Clone the repository and install dependencies:**
    ```sh
-   git clone https://github.com/Brunoxir/paktyki_backend.git
+   git clone https://github.com/kr4sy/Simple-Auth-Api.git
    cd paktyki_backend/rest_api
    npm install
    ```
